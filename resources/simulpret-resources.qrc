@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/simulpret/icons">
+        <file>plus.png</file>
+        <file>delete.png</file>
+        <file>edit.png</file>
+    </qresource>
+</RCC>
