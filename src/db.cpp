@@ -62,10 +62,10 @@ bool createSchema()
         qDebug() << "Error while inserting date into 'evenement_type' TABLE" << q.lastError().text();
     if ( !q.exec("INSERT INTO evenement_type (libelle) VALUES ('Remboursement anticipé')") )
         qDebug() << "Error while inserting date into 'evenement_type' TABLE" << q.lastError().text();
-    if ( !q.exec("INSERT INTO evenement_type (libelle) VALUES ('Report de mensualité')") )
+/*    if ( !q.exec("INSERT INTO evenement_type (libelle) VALUES ('Report de mensualité')") )
         qDebug() << "Error while inserting date into 'evenement_type' TABLE" << q.lastError().text();
     if ( !q.exec("INSERT INTO evenement_type (libelle) VALUES ('Changement de taux')") )
-        qDebug() << "Error while inserting date into 'evenement_type' TABLE" << q.lastError().text();
+        qDebug() << "Error while inserting date into 'evenement_type' TABLE" << q.lastError().text(); */
 
     qDebug("Database schema created!");
     return TRUE;
@@ -143,17 +143,6 @@ void initializeEcheancierModel(QSqlQueryModel *model, int echeancierId)
     query.bindValue(":id", echeancierId);
     query.exec();
     model->setQuery(query);
-//    model->setQuery("select date, capitalRestantDu, capitalAmorti, interets, assurance, mensualite from echeance where echeancier_id =0");
-//    model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
-//    model->setHeaderData(1, Qt::Horizontal, QObject::tr("Name"));
-/*
-    std::cout << "initializeEcheancierModel\n";
-    for (int i = 0; i < model->rowCount(); ++i) {
-        int id = model->record(i).value("id").toInt();
-        QString name = model->record(i).value("name").toString();
-        std::cout << name.toStdString() << "\n";
-    }
-    std::cout.flush(); */
 }
 
 /**
@@ -171,10 +160,6 @@ void ajouterEvenement(QDate date, QString libelle, float valeur, int pretId, int
     query.bindValue(":pret_id", pretId);
     if ( !query.exec() )
         qDebug() << "Error while inserting data into 'evenement' table:" << query.lastError().text();
-
-//    std::cout << "insert into evenement(date, libelle, valeur, isPermanent, type_id, pret_id) values ("
-//              << date.toString().toStdString() << ", " << libelle.toStdString() << ", " << valeur << ", " << pretId << ", " << typeId << ", " << isPermanent << ")" << std::endl;
-    std::cout << " event id = " << query.lastInsertId().toInt() << std::endl;
 }
 
 /**
@@ -236,7 +221,6 @@ QList<Evenement> getEvenements(int pretId)
         bool isPermanent = query.value(3).toBool();
         Evenement evt = Evenement(date, valeur, type, isPermanent);
         evts << evt;
-//        std::cout << "new event : " << evt.getType() << std::endl;
     }
 
     std::cout << "nb evenements du pret #" << pretId << " (getEvenements) = " << evts.count() << std::endl;

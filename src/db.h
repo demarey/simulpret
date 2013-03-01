@@ -2,7 +2,6 @@
 #define DB_H
 
 #define DB_DRIVER     "QSQLITE"
-// #define DB_DBNAME     "simulpret.db"
 #define DB_DBNAME     ":memory:"
 #define DB_USER       "chris"
 #define DB_PASSWD     "chris"

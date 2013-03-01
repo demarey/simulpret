@@ -449,7 +449,7 @@
      <string/>
     </property>
     <property name="icon">
-     <iconset resource="simulpret-resources.qrc">
+     <iconset resource="../../resources/simulpret-resources.qrc">
       <normaloff>:/simulpret/icons/delete.png</normaloff>:/simulpret/icons/delete.png</iconset>
     </property>
    </widget>
@@ -466,7 +466,7 @@
      <string/>
     </property>
     <property name="icon">
-     <iconset resource="simulpret-resources.qrc">
+     <iconset resource="../../resources/simulpret-resources.qrc">
       <normaloff>:/simulpret/icons/plus.png</normaloff>:/simulpret/icons/plus.png</iconset>
     </property>
    </widget>
@@ -482,9 +482,9 @@
    </property>
    <widget class="QMenu" name="menuSimulPret">
     <property name="title">
-     <string>SimulPrêt</string>
+     <string>SimulPret</string>
     </property>
-    <addaction name="actionNouveau_pret"/>
+    <addaction name="actionNouveau_projet"/>
     <addaction name="actionOuvrir"/>
     <addaction name="actionQuitter"/>
    </widget>
@@ -499,9 +499,9 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionNouveau_pret">
+  <action name="actionNouveau_projet">
    <property name="text">
-    <string>Nouveau prêt</string>
+    <string>Nouveau projet</string>
    </property>
   </action>
   <action name="actionOuvrir">
@@ -513,11 +513,14 @@
    <property name="text">
     <string>Quitter</string>
    </property>
+   <property name="shortcut">
+    <string>Meta+Q</string>
+   </property>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="simulpret-resources.qrc"/>
+  <include location="../../resources/simulpret-resources.qrc"/>
  </resources>
  <connections>
   <connection>
