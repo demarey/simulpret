@@ -54,19 +54,18 @@ bool createSchema()
     if ( !q.exec("CREATE  TABLE IF NOT EXISTS `evenement` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `date` DATETIME NULL , `libelle` VARCHAR NULL , `valeur` FLOAT NULL , `isPermanent` BOOLEAN NULL , `pret_id` INT NOT NULL , `type_id` INT NOT NULL , FOREIGN KEY (`pret_id` ) REFERENCES `pret` (`id`), FOREIGN KEY (`type_id` ) REFERENCES `evenement_type` (`id`) )") )
         qDebug() << "Error on 'pret' TABLE echeance" << q.lastError().text();
 
-    if ( !q.exec("INSERT INTO evenement_type (libelle) VALUES ('Différé total')") )
-        qDebug() << "Error while inserting date into 'evenement_type' TABLE" << q.lastError().text();
-    if ( !q.exec("INSERT INTO evenement_type (libelle) VALUES ('Différé partiel (paiement des intérêts)')") )
-        qDebug() << "Error while inserting date into 'evenement_type' TABLE" << q.lastError().text();
-    if ( !q.exec("INSERT INTO evenement_type (libelle) VALUES ('Modification de mensualité')") )
-        qDebug() << "Error while inserting date into 'evenement_type' TABLE" << q.lastError().text();
-    if ( !q.exec("INSERT INTO evenement_type (libelle) VALUES ('Remboursement anticipé')") )
-        qDebug() << "Error while inserting date into 'evenement_type' TABLE" << q.lastError().text();
-/*    if ( !q.exec("INSERT INTO evenement_type (libelle) VALUES ('Report de mensualité')") )
-        qDebug() << "Error while inserting date into 'evenement_type' TABLE" << q.lastError().text();
-    if ( !q.exec("INSERT INTO evenement_type (libelle) VALUES ('Changement de taux')") )
-        qDebug() << "Error while inserting date into 'evenement_type' TABLE" << q.lastError().text(); */
-
+    q.prepare("insert into evenement_type (libelle) values (?)");
+    QVariantList events;
+    events << QString::fromUtf8("Différé total")
+	<< QString::fromUtf8("Différé partiel (paiement des intérêts)")
+	<< QString::fromUtf8("Modification de mensualité")
+	<< QString::fromUtf8("Remboursement anticipé")
+	/* << QString::fromUtf8("Report de mensualité");
+	 << QString::fromUtf8("Changement de taux") */;
+    q.addBindValue(events);
+    if (!q.execBatch())
+        qDebug() << "Error while inserting date into 'evenement_type' TABLE" << q.lastError().text();;
+	
     qDebug("Database schema created!");
     return TRUE;
 }
