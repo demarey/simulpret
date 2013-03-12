@@ -8,7 +8,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   git clone --quiet --branch=gh-pages https://${GH_TOKEN}@github.com/demarey/simulpret.git gh-pages > /dev/null
   #go into diractory and copy data we're interested in to that directory
   cd gh-pages
-  cp -f $HOME/simulpret/build/simulpret .
+  cp -f $HOME/simulpret/build/simulpret ./download/
   #add, commit and push files
   git add -f .
   git commit -m "Travis build $TRAVIS_BUILD_NUMBER pushed to gh-pages"
