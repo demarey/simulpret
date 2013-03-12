@@ -1,7 +1,7 @@
 language: cpp
 compiler:
   - gcc
-script: pwd && mkdir build && cd build && cmake .. && make ; cd -
+script: mkdir build && cd build && cmake .. && make
 after_success: pwd && ./update-gh-pages.sh
 branches:
   only:
