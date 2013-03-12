@@ -1,8 +1,8 @@
 language: cpp
 compiler:
   - gcc
-script: mkdir build && cd build && cmake .. && make ; cd -
-after_success: ./update-gh-pages.sh
+script: pwd && mkdir build && cd build && cmake .. && make ; cd -
+after_success: pwd && ./update-gh-pages.sh
 branches:
   only:
     - master
