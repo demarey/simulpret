@@ -1,8 +1,16 @@
 language: cpp
 compiler:
   - gcc
-script: mkdir build && cd build && cmake .. && make
+script: mkdir build && cd build && cmake .. && make ; cd -
+after_success: ./update-gh-pages.sh
 branches:
   only:
     - master
+language: cpp
+env:
+  global:
+  - secure: ! 'a/XU7Pm4F/S5yuOLwLOppoYsRpqohkubIBgFIP5z2NGv9D64GaW6o1cpFAYu
 
+      Acp5olEHruV6CiqgTK6pUI4YOJtxQ+bL/dL8FiBhNFU39JKFL1RHhgfudRab
+
+      v5KqS3ulUqr7GW6V8wAaqRGecin9GSIRfbVAWHZ9iV4kpqG9eHU='
