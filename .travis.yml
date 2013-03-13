@@ -2,7 +2,7 @@ language: cpp
 compiler:
   - gcc
 script: mkdir build && cd build && cmake .. && make
-after_success: pwd && ./update-gh-pages.sh
+after_success: pwd && ../update-gh-pages.sh
 branches:
   only:
     - master
