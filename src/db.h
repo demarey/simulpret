@@ -2,23 +2,46 @@
 #define DB_H
 
 #define DB_DRIVER     "QSQLITE"
-#define DB_DBNAME     ":memory:"
-#define DB_USER       "chris"
-#define DB_PASSWD     "chris"
 #define DB_HOST       "localhost"
+#define IN_MEMORY_DB_NAME  "memory"
 
-#include <QString>
 #include <QDate>
+#include <QString>
+#include <QSqlQuery>
 #include <QtSql>
 #include "evenement.h"
+#include "pret.h"
 
-bool createConnection();
+/**
+ * Créer une nouvelle base avec le schéma associé.
+ */
+bool newDB(QString dbName);
+/**
+ * Fermer la connection à la BD.
+ */
+void closeDB();
+/**
+ *  Positionner la base par défaut.
+ */
+bool setDefaultDB(QString dbName);
+/**
+ *  Créer le schéma pour la base par défaut.
+ */
 bool createSchema();
+/**
+ * Créer une base de donnees en memoire.
+ */
+bool createInMemoryDB();
 
 /**
  *  Ajouter un pret dans la table correspondante.
  */
-int ajouterPret(QString libelle, int capitalEmprunte, float tauxInteret, float tauxAssurance, int duree, float mensualite, QDate dateDebloquage);
+void ajouterPret(int id, QString libelle, int capitalEmprunte, float tauxInteret, float tauxAssurance, int duree, float mensualite, QDate dateDebloquage);
+
+/**
+ *  Récupérer les prets depuis la BD.
+ */
+QList<Pret *> getPrets();
 
 /**
  * Creer un nouvel échéancier.
@@ -75,10 +98,5 @@ float getCoutAssurance(int echeancierId);
  * Calculer la somme des mensualités versées.
  */
 float getSommeMensualites(int echeancierId);
-
-/**
- * Calculer la somme des remboursements anticipes.
- */
-float getSommeRbtAnticipes(int echeancierId);
 
 #endif // DB_H
