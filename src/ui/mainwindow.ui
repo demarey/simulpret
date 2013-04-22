@@ -486,6 +486,7 @@
     </property>
     <addaction name="actionNouveau_projet"/>
     <addaction name="actionOuvrir"/>
+    <addaction name="actionSauvegarder"/>
     <addaction name="actionQuitter"/>
    </widget>
    <addaction name="menuSimulPret"/>
@@ -503,6 +504,9 @@
    <property name="text">
     <string>Nouveau projet</string>
    </property>
+   <property name="shortcut">
+    <string>Meta+N</string>
+   </property>
   </action>
   <action name="actionOuvrir">
    <property name="text">
@@ -515,6 +519,14 @@
    </property>
    <property name="shortcut">
     <string>Meta+Q</string>
+   </property>
+  </action>
+  <action name="actionSauvegarder">
+   <property name="text">
+    <string>Sauvegarder</string>
+   </property>
+   <property name="shortcut">
+    <string>Meta+S</string>
    </property>
   </action>
  </widget>
@@ -540,4 +552,7 @@
    </hints>
   </connection>
  </connections>
+ <slots>
+  <slot>on_menuNouveauProjet_clicked()</slot>
+ </slots>
 </ui>

@@ -2,8 +2,9 @@
 
 Evenement::Evenement() {}
 
-Evenement::Evenement(QDate date, float valeur, EvenementType type, bool isPermanent)
+Evenement::Evenement(QString libelle, QDate date, float valeur, EvenementType type, bool isPermanent)
 {
+    this->libelle = libelle;
     this->date = date;
     this->valeur = valeur;
     this->type = type;
@@ -26,3 +27,5 @@ bool Evenement::isPermanent() {
     return permanent;
 }
 
+void Evenement::persist() {
+}

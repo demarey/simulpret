@@ -43,8 +43,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    if (! (createConnection() && createSchema()))
-        return 1;
+    createInMemoryDB();
 
     MainWindow window;
     QSqlQueryModel plainModel;

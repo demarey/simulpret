@@ -2,8 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-//#include <QSqlQueryModel>
-#include "../pret.h"
+#include <QCloseEvent>
+#include "../projet.h"
 
 namespace Ui {
     class MainWindow;
@@ -14,19 +14,21 @@ class MainWindow : public QMainWindow {
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
-//    void initTable(const QString &title, QSqlQueryModel *model) {
+    void closeEvent(QCloseEvent *event);
 
 protected:
     void changeEvent(QEvent *e);
 
 private slots:
+    void on_actionNouveau_projet_triggered();
+    void on_actionSauvegarder_triggered();
     void on_simulationButton_clicked();
     void on_boutonAjouterEvenement_clicked();
     void on_boutonSupprimerEvenement_clicked();
 
 private:
     Ui::MainWindow *ui;
-    Pret *pret;
+    Projet *projet;
     int echeancierCourant;
 };
 

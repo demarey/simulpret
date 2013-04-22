@@ -1,5 +1,6 @@
 #include "pret.h"
 #include "db.h"
+#include <QListIterator>
 #include <QStringBuilder>
 #include <QString>
 #include <math.h>
@@ -7,37 +8,28 @@
 
 Pret::Pret(long capitalEmprunte, float tauxInteret, int duree, float tauxAssurance, QDate dateDebloquage)
 {
-    majPret(capitalEmprunte, tauxInteret, duree, tauxAssurance, dateDebloquage);
-    // Enregistrement dans la BD
-    this->id = ajouterPret("Pret", capitalEmprunte, tauxInteret, tauxAssurance, duree, this->mensualite, dateDebloquage);
-}
-
-Pret::Pret(long capitalEmprunte, float tauxInteret, float mensualite, float tauxAssurance, QDate dateDebloquage)
-{
-    majPret(capitalEmprunte, tauxInteret, mensualite, tauxAssurance, dateDebloquage);
-    // Enregistrement dans la BD
-    this->id = ajouterPret("Pret", capitalEmprunte, tauxInteret, tauxAssurance, this->duree, mensualite, dateDebloquage);
-}
-
-void Pret::majPret(long capitalEmprunte, float tauxInteret, int duree, float tauxAssurance, QDate dateDebloquage) {
     this->capitalEmprunte = capitalEmprunte;
     this->tauxInteret = tauxInteret;
     this->duree = duree;
+    this->mensualite = 0;
     this->tauxAssurance = tauxAssurance;
     this->dateDebloquage = dateDebloquage;
-    // calculer la mensualite
-    this->mensualite = calculerMensualite(capitalEmprunte, tauxInteret, duree, tauxAssurance);
-    // TODO : MAJ BD
+    qDebug() << "creation pret avec duree" << capitalEmprunte << tauxInteret << tauxAssurance << mensualite << duree << dateDebloquage.toString(Qt::ISODate);
 }
 
-void Pret::majPret(long capitalEmprunte, float tauxInteret, float mensualite, float tauxAssurance, QDate dateDebloquage) {
+Pret::Pret(long capitalEmprunte, float tauxInteret, float mensualiteHorsAssurance, float tauxAssurance, QDate dateDebloquage)
+{
     this->capitalEmprunte = capitalEmprunte;
     this->tauxInteret = tauxInteret;
     this->tauxAssurance = tauxAssurance;
-    this->mensualite = mensualite - getCoutMensuelAssurance();
+    this->mensualite = mensualiteHorsAssurance;
+    this->duree = 0;
     this->dateDebloquage = dateDebloquage;
-    this->duree = calculerDureeRemboursement(capitalEmprunte, tauxInteret, mensualite, tauxAssurance);
-    // TODO : MAJ BD
+    qDebug() << "creation pret avec mensualite" << capitalEmprunte << tauxInteret << tauxAssurance << mensualite << duree << dateDebloquage.toString(Qt::ISODate);
+}
+
+void Pret::ajouterEvenement(Evenement *evt) {
+    evenements.append(evt);
 }
 
 float Pret::getCoutMensuelAssurance() {
@@ -49,8 +41,8 @@ int Pret::calculerDureeRemboursement(long capitalEmprunte, float tauxInteret, fl
     return ceil(n);
 }
 
-int Pret::calculerDureeRemboursement(float mensualite) {
-    float n = (log((12*this->mensualite) / (12*mensualite-this->tauxInteret*this->capitalEmprunte))) / log(1+this->tauxInteret/12);
+int Pret::majDureeRemboursement(float mensualite, float nouvelleMensualite) {
+    float n = (log((12*mensualite) / (12*nouvelleMensualite-this->tauxInteret*this->capitalEmprunte))) / log(1+this->tauxInteret/12);
     return ceil(n);
 }
 
@@ -66,24 +58,27 @@ int Pret::getId() {
     return this->id;
 }
 
+void Pret::setId(int id) {
+    this->id = id;
+}
+
 int Pret::calculerEcheancier() {
     double capitalRestantDu = this->capitalEmprunte;
+    double assurance = getCoutMensuelAssurance();
     double capitalRembourse,
            interets = 0,
-           mensualiteEcheance = this->mensualite;
-    double assurance = getCoutMensuelAssurance();
+           mensualiteEcheance = this->getMensualite() - assurance;
     QDate dateMensualite = this->dateDebloquage;
     bool evenementTraite = true;
 
     // Créer l'échéancier
-    int echeancierId = creerEcheancier("Echéancier prêt", QDate::currentDate(), 1);
+    int echeancierId = creerEcheancier("Echéancier prêt", QDate::currentDate(), this->id);
 
     std::cout << "Echeancier id : " << echeancierId << "\n";
     if (echeancierId != -1) {
         // Récupérer les événements relatifs au prêt
-        QList<Evenement> evts = getEvenements(this->id);
-        QListIterator<Evenement> evtsIterator(evts);
-        std::cout << "evts size = " << evts.count() << std::endl;
+        QListIterator<Evenement *> evtsIterator(this->evenements);
+        std::cout << "evts size = " << this->evenements.count() << std::endl;
         Evenement event;
 
         // Calculer les échéances
@@ -91,7 +86,7 @@ int Pret::calculerEcheancier() {
             if ( !evenementTraite || (evenementTraite && evtsIterator.hasNext()) ) {
                 // Si evenement traité, passer au suivant
                 if ( evenementTraite ) {
-                    event = evtsIterator.next();
+                    event = *evtsIterator.next();
                     evenementTraite = false;
                 }
                 // Si la date de mensualité est antérieure à la date de l'évènement, rien à faire : on attend l'échéance suivante.
@@ -120,7 +115,7 @@ int Pret::calculerEcheancier() {
                     case Evenement::MAJ_MENSUALITE :
                         std::cout << "maj mensualite" << std::endl;
                         mensualiteEcheance = event.getValeur() - getCoutMensuelAssurance();
-                        this->duree = calculerDureeRemboursement(mensualiteEcheance);
+                        this->duree = majDureeRemboursement(this->getMensualite(), mensualiteEcheance);
                         break;
                     case Evenement::MAJ_TAUX :
                         std::cout << "maj taux" << std::endl;
@@ -153,18 +148,63 @@ int Pret::calculerEcheancier() {
     return echeancierId;
 }
 
-/**
- * Calculer le coût total du crédit (inclue l'assurance).
- */
+float Pret::getSommeRbtAnticipes() {
+    float somme = 0.0;
+
+    QListIterator<Evenement *> iterator(this->evenements);
+     while (iterator.hasNext()) {
+         Evenement *evt = iterator.next();
+         if (evt->getType() == Evenement::RBT_ANTICIPE)
+            somme += evt->getValeur();
+     }
+     return somme;
+}
+
 float Pret::getCoutTotalCredit(int echeancierId) {
-    return getSommeMensualites(echeancierId) + getSommeRbtAnticipes(this->getId()) - this->capitalEmprunte;
+    return getSommeMensualites(echeancierId) + getSommeRbtAnticipes() - this->capitalEmprunte;
+}
+
+long Pret::getCapitalEmprunte() { return capitalEmprunte; }
+float Pret::getTauxInteret() { return tauxInteret; }
+float Pret::getTauxAssurance() { return tauxAssurance; }
+QDate Pret::getDateDebloquage() { return dateDebloquage; }
+
+/**
+ * @brief Récupérer la durée totale du prêt en mois.
+ * @return la durée du prêt spécifiée par l'utilisateur, sinon la durée calculéee à partir des autres données.
+ */
+int Pret::getDuree() {
+    if (duree == 0)
+        return calculerDureeRemboursement(capitalEmprunte, tauxInteret, mensualite, tauxAssurance);
+    else
+        return this->duree;
+}
+
+/**
+ * @brief Récupérer la mensualité (hors assurance) du prêt courant.
+ * @return la mensualité désirée si fournie par l'utilisateur ou calculée à partir des autres données.
+ */
+float Pret::getMensualite() {
+    if (mensualite == 0)
+        return calculerMensualite(capitalEmprunte, tauxInteret, duree, tauxAssurance);
+    else
+        return mensualite;
 }
 
 QString Pret::toString() {
     QString mensualite = "mensualite = ";
-    QString value ; value.setNum(this->mensualite);
+    QString value ; value.setNum(this->getMensualite());
     QString duree = " duree = ";
-    QString value2 ; value2.setNum(this->duree);
+    QString value2 ; value2.setNum(this->getDuree());
     QString result = mensualite % value % duree % value2;
     return result;
 }
+
+void Pret::accept(Visitor &visitor) {
+    visitor.visit(this);
+/*    QListIterator<Pret *> iterator( this->evenements );
+     while (iterator.hasNext())
+         visitor.visit( iterator.next() );*/
+}
+
+
