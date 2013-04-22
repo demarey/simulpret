@@ -3,7 +3,7 @@
 
 #include <QList>
 #include <QString>
-#include <QDatetime>
+#include <QDate>
 #include "evenement.h"
 #include "visitor.h"
 
