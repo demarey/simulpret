@@ -3,6 +3,7 @@ compiler:
   - gcc
 script: mkdir build && cd build && cmake .. && make && make test
 after_success: pwd && ../update-gh-pages.sh
+after_failure: cat Testing/Temporary/LastTest.log
 branches:
   only:
     - master
