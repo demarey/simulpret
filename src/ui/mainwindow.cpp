@@ -7,7 +7,7 @@
 #include "currencydelegate.h"
 #include "evenementdialog.h"
 #include <QtSql>
-#include <QFiledialog>
+#include <QFileDialog>
 #include <QMessageBox>
 #include <iostream>
 
