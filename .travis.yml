@@ -4,7 +4,7 @@ compiler:
 script: mkdir build && cd build && cmake .. && make && make test
 before_install:
  - sudo apt-get update -qq
- - sudo apt-get install -qq [xserver-xorg]
+ - sudo apt-get install -qq xserver-xorg
 after_success: pwd && ../update-gh-pages.sh
 after_failure: cat Testing/Temporary/LastTest.log
 branches:
