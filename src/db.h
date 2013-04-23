@@ -70,11 +70,6 @@ void ajouterEvenement(QDate date, QString libelle, float valeur, int pretId, int
 void supprimerEvenement(int eventId, int pretId);
 
 /**
- *  Initialiser le modèle des évènements en vue de l'affichage
- */
-void initializeEvenementModel(QSqlQueryModel *model, int echeancierId);
-
-/**
  *  Initialiser le modèle des types d'évènements en vue de l'affichage
  */
 void initializeTypesEvenementModel(QSqlQueryModel *model);
