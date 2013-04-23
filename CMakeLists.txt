@@ -13,6 +13,7 @@ SET(SIMULPRET_SOURCES
     src/projet.cpp
     src/ui/currencydelegate.cpp
     src/ui/evenementdialog.cpp
+    src/ui/evenementmodel.cpp
     src/ui/mainwindow.cpp)
 SET(SIMULPRET_HEADERS
     src/db.h
@@ -22,6 +23,7 @@ SET(SIMULPRET_HEADERS
     src/visitor.h
     src/ui/currencydelegate.h
     src/ui/evenementdialog.h
+    src/ui/evenementmodel.h
     src/ui/mainwindow.h)
 SET(SIMULPRET_FORMS
     src/ui/evenementdialog.ui
@@ -47,6 +49,7 @@ TARGET_LINK_LIBRARIES(simulpret ${QT_LIBRARIES} ${QT_QTSQL_LIBRARIES})
 
 ENABLE_TESTING(true)
 INCLUDE_DIRECTORIES( test )
+SET(VERBOSE 1)
 
 MACRO(add_qtest testname testsrc)
     SET(test_${testname}_SRCS ${testsrc})

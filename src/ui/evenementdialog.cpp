@@ -31,7 +31,6 @@ EvenementDialog::~EvenementDialog()
 
 void EvenementDialog::accept ()
 {
-    //int pretId = 1;
     QString libelle = ui->libelleInput->text();
     QDate date = ui->dateInput->date();
     float valeur = ui->valeurInput->text().toFloat();
@@ -44,7 +43,7 @@ void EvenementDialog::accept ()
     std::cout << "event " << evt->getType() << " valeur:" << evt->getValeur() << std::endl;
     pret->ajouterEvenement(evt);
 
-    //ajouterEvenement(ui->dateInput->date(), ui->libelleInput->text(), value, pretId, eventTypeId, true);
+//    ajouterEvenement(ui->dateInput->date(), ui->libelleInput->text(), value, pretId, eventTypeId, true);
 //    std::cout << "accept eventtype=" << eventTypeId << std::endl;
     std::cout << "accept eventtype=" << type << std::endl;
     QDialog::accept();

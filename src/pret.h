@@ -20,7 +20,7 @@ public:
     float tauxInteret;
     float tauxAssurance;
     QDate dateDebloquage;
-    QList<Evenement *> evenements;
+    QList<Evenement> evenements;
 public:
     Pret();
     Pret(long capitalEmprunte, float tauxInteret, int duree, float tauxAssurance, QDate dateDebloquage);

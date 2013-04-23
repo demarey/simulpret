@@ -29,7 +29,7 @@ Pret::Pret(long capitalEmprunte, float tauxInteret, float mensualiteHorsAssuranc
 }
 
 void Pret::ajouterEvenement(Evenement *evt) {
-    evenements.append(evt);
+    evenements.append(*evt);
 }
 
 float Pret::getCoutMensuelAssurance() {
@@ -77,7 +77,7 @@ int Pret::calculerEcheancier() {
     std::cout << "Echeancier id : " << echeancierId << "\n";
     if (echeancierId != -1) {
         // Récupérer les événements relatifs au prêt
-        QListIterator<Evenement *> evtsIterator(this->evenements);
+        QListIterator<Evenement> evtsIterator(this->evenements);
         std::cout << "evts size = " << this->evenements.count() << std::endl;
         Evenement event;
 
@@ -86,7 +86,7 @@ int Pret::calculerEcheancier() {
             if ( !evenementTraite || (evenementTraite && evtsIterator.hasNext()) ) {
                 // Si evenement traité, passer au suivant
                 if ( evenementTraite ) {
-                    event = *evtsIterator.next();
+                    event = evtsIterator.next();
                     evenementTraite = false;
                 }
                 // Si la date de mensualité est antérieure à la date de l'évènement, rien à faire : on attend l'échéance suivante.
@@ -151,11 +151,11 @@ int Pret::calculerEcheancier() {
 float Pret::getSommeRbtAnticipes() {
     float somme = 0.0;
 
-    QListIterator<Evenement *> iterator(this->evenements);
+    QListIterator<Evenement> iterator(this->evenements);
      while (iterator.hasNext()) {
-         Evenement *evt = iterator.next();
-         if (evt->getType() == Evenement::RBT_ANTICIPE)
-            somme += evt->getValeur();
+         Evenement evt = iterator.next();
+         if (evt.getType() == Evenement::RBT_ANTICIPE)
+            somme += evt.getValeur();
      }
      return somme;
 }

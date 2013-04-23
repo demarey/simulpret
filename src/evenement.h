@@ -11,11 +11,15 @@ public:
 
     Evenement();
     Evenement(QString libelle, QDate date, float valeur, EvenementType type, bool isPermanent);
+
+    QString getLibelle();
     QDate getDate();
     float getValeur();
     EvenementType getType();
+    QString getTypeAsString();
     bool isPermanent();
     void persist();
+
 private:
     QDate date;
     float valeur;

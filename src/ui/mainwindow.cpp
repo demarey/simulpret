@@ -6,6 +6,7 @@
 #include "../db.h"
 #include "currencydelegate.h"
 #include "evenementdialog.h"
+#include "evenementmodel.h"
 #include <QtSql>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -84,8 +85,8 @@ void MainWindow::on_actionNouveau_projet_triggered() {
 void MainWindow::on_actionSauvegarder_triggered() {
     QString filename = QFileDialog::getSaveFileName(this, "Sauvergarder le projet", ".smp", ".smp");
     newDB(filename);
-    DBdumper dumper;
-    this->projet->accept( dumper );
+    DBdumper dbdumper;
+    this->projet->accept( dbdumper );
 }
 
 void MainWindow::on_simulationButton_clicked() {
@@ -132,9 +133,11 @@ void MainWindow::on_boutonAjouterEvenement_clicked() {
     dialog->exec();
     delete dialog;
 
-    QSqlQueryModel *evenementModel = new QSqlQueryModel();
-    initializeEvenementModel(evenementModel, this->projet->getPrets().last()->getId());
-    ui->evenementsTable->setModel(evenementModel);
+//    QSqlQueryModel *evenementModel = new QSqlQueryModel();
+//    initializeEvenementModel(evenementModel, this->projet->getPrets().last()->getId());
+//    ui->evenementsTable->setModel(evenementModel);
+    EvenementModel *evenementModel = new EvenementModel( this->projet->getPrets().last()->evenements );
+    ui->evenementsTable->setModel( evenementModel );
     std::cout << "pretId=" << this->projet->getPrets().last()->getId() << std::endl;
 }
 
