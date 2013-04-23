@@ -253,19 +253,6 @@ void supprimerEvenement(int eventId, int pretId) {
 }
 
 /**
- *  Initialiser le modèle des évènements en vue de l'affichage
- */
-void initializeEvenementModel(QSqlQueryModel *model, int pretId)
-{
-    QSqlQuery query( QSqlDatabase::database(IN_MEMORY_DB_NAME) );
-
-    query.prepare("select date, t.libelle as type, valeur, isPermanent, e.libelle from evenement e, evenement_type t where pret_id = :id and e.type_id = t.id");
-    query.bindValue(":id", pretId);
-    query.exec();
-    model->setQuery(query);
-}
-
-/**
  *  Initialiser le modèle des types d'évènements en vue de l'affichage
  */
 void initializeTypesEvenementModel(QSqlQueryModel *model)
