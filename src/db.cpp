@@ -13,19 +13,11 @@
 bool newDB(QString dbName)
 {
     bool result = setDefaultDB(dbName) && createSchema();
-    /*QSqlQuery query("savepoint SP-not-saved;");
-    if ( !query.exec() )
-        qDebug() << query.lastError().text();*/
     return result;
 }
 
 void closeDB()
 {
-    /* Jeter les modifications non enregistrées.
-    QSqlQuery query("rollback to savepoint SP-not-saved;");
-    if ( !query.exec() )
-        qDebug() << query.lastError().text(); */
-
      // Fermer la BD
     QSqlDatabase db = QSqlDatabase::database();
     if ( db.isOpen() )
