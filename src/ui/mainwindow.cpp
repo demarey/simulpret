@@ -89,6 +89,14 @@ void MainWindow::on_actionSauvegarder_triggered() {
     this->projet->accept( dbdumper );
 }
 
+void MainWindow::majEcheancier() {
+    this->echeancierCourant = this->projet->getPretCourant()->calculerEcheancier();
+    QSqlQueryModel *echeancierModel = new QSqlQueryModel();
+    initializeEcheancierModel(echeancierModel, this->echeancierCourant);
+    //    createView(QObject::tr("Simulation de pret"), plainModel);
+    ui->tableView->setModel(echeancierModel);
+}
+
 void MainWindow::on_simulationButton_clicked() {
     Pret *pret;
 
@@ -115,11 +123,7 @@ void MainWindow::on_simulationButton_clicked() {
 
     std::cout << pret->toString().toStdString() << std::endl;
 
-    this->echeancierCourant = pret->calculerEcheancier();
-    QSqlQueryModel *echeancierModel = new QSqlQueryModel();
-    initializeEcheancierModel(echeancierModel, this->echeancierCourant);
-//    createView(QObject::tr("Simulation de pret"), plainModel);
-    ui->tableView->setModel(echeancierModel);
+    this->majEcheancier();
 //    ui->labelCoutInteret->setText( QString("%1%L2").arg(QChar(8364)).arg(getSommeInterets(this->echeancierCourant), 0, 'f', 2) );
     ui->labelCoutInteret->setText( QString("%1%L2").arg(QChar(8364)).arg(pret->getCoutTotalCredit(this->echeancierCourant), 0, 'f', 2) );
     ui->labelCoutAssurance->setText( QString("%1%L2").arg(QChar(8364)).arg(getCoutAssurance(this->echeancierCourant), 0, 'f', 2) );
@@ -133,12 +137,10 @@ void MainWindow::on_boutonAjouterEvenement_clicked() {
     dialog->exec();
     delete dialog;
 
-//    QSqlQueryModel *evenementModel = new QSqlQueryModel();
-//    initializeEvenementModel(evenementModel, this->projet->getPrets().last()->getId());
-//    ui->evenementsTable->setModel(evenementModel);
     EvenementModel *evenementModel = new EvenementModel( this->projet->getPrets().last()->evenements );
     ui->evenementsTable->setModel( evenementModel );
     std::cout << "pretId=" << this->projet->getPrets().last()->getId() << std::endl;
+    this->majEcheancier();
 }
 
 void MainWindow::on_boutonSupprimerEvenement_clicked() {

@@ -18,6 +18,7 @@ public:
 
 protected:
     void changeEvent(QEvent *e);
+    void majEcheancier();
 
 private slots:
     void on_actionNouveau_projet_triggered();
