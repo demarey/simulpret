@@ -79,7 +79,7 @@ int Pret::calculerEcheancier() {
     double assurance = getCoutMensuelAssurance();
     double capitalRembourse,
            interets = 0,
-           mensualiteEcheance = this->getMensualite() - assurance;
+           mensualiteEcheance = this->getMensualite();
     QDate dateMensualite = this->dateDebloquage;
     bool evenementTraite = true;
 
