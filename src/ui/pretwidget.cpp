@@ -73,10 +73,10 @@ void PretWidget::on_calculerButton_clicked() {
 
     // TODO: tester valeurs MAJ dans ui et MAJ attributs pret
     pret.initialize( ui->capitalEmprunte->text().toLong(),
-                      ui->tauxPret->text().toFloat(),
+                      ui->tauxPret->text().toFloat() / 100.0 ,
                       ui->duree->text().toInt(),
                       ui->mensualite->text().toFloat(),
-                      ui->assTaux1->text().toFloat(),
+                      ui->assTaux1->text().toFloat() / 100.0,
                       ui->dateDebloquage->date());
 
     this->majEcheancier();

@@ -94,7 +94,7 @@
           </size>
          </property>
          <property name="text">
-          <string>0</string>
+          <string>0.07</string>
          </property>
         </widget>
        </item>
@@ -276,7 +276,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>1000</string>
+     <string/>
     </property>
    </widget>
    <widget class="QLineEdit" name="duree">
@@ -289,7 +289,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>0</string>
+     <string>120</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="tauxPret">
@@ -302,7 +302,7 @@
      </rect>
     </property>
     <property name="text">
-     <string notr="true">0.045</string>
+     <string notr="true">4.5</string>
     </property>
    </widget>
    <widget class="QDateEdit" name="dateDebloquage">
