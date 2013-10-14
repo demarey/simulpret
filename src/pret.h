@@ -25,6 +25,7 @@ public:
     Pret();
     Pret(long capitalEmprunte, float tauxInteret, int duree, float tauxAssurance, QDate dateDebloquage);
     Pret(long capitalEmprunte, float tauxInteret, float mensualiteHorsAssurance, float tauxAssurance, QDate dateDebloquage);
+    void initialize(long capitalEmprunte, float tauxInteret, int duree, float mensualiteHorsAssurance, float tauxAssurance, QDate dateDebloquage);
 
     /**
      * Calculer le coût mensuel de l'assurance.

@@ -18,19 +18,14 @@ public:
 
 protected:
     void changeEvent(QEvent *e);
-    void majEcheancier();
 
 private slots:
     void on_actionNouveau_projet_triggered();
     void on_actionSauvegarder_triggered();
-    void on_simulationButton_clicked();
-    void on_boutonAjouterEvenement_clicked();
-    void on_boutonSupprimerEvenement_clicked();
 
 private:
     Ui::MainWindow *ui;
     Projet *projet;
-    int echeancierCourant;
 };
 
 #endif // MAINWINDOW_H

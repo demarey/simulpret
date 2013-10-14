@@ -14,7 +14,8 @@ SET(SIMULPRET_SOURCES
     src/ui/currencydelegate.cpp
     src/ui/evenementdialog.cpp
     src/ui/evenementmodel.cpp
-    src/ui/mainwindow.cpp)
+    src/ui/mainwindow.cpp
+    src/ui/pretwidget.cpp)
 SET(SIMULPRET_HEADERS
     src/db.h
     src/evenement.h
@@ -24,10 +25,12 @@ SET(SIMULPRET_HEADERS
     src/ui/currencydelegate.h
     src/ui/evenementdialog.h
     src/ui/evenementmodel.h
-    src/ui/mainwindow.h)
+    src/ui/mainwindow.h
+    src/ui/pretwidget.h)
 SET(SIMULPRET_FORMS
     src/ui/evenementdialog.ui
-    src/ui/mainwindow.ui)
+    src/ui/mainwindow.ui
+    src/ui/pretwidget.ui)
 SET(SIMULPRET_RESOURCES
     resources/simulpret-resources.qrc)
 

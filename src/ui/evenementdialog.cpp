@@ -7,9 +7,10 @@
 #include <iostream>
 
 
-EvenementDialog::EvenementDialog(Pret *pret, QWidget *parent) :
+EvenementDialog::EvenementDialog(Pret& pret, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::EvenementDialog)
+    ui(new Ui::EvenementDialog),
+    pret(pret)
 {
     ui->setupUi(this);
 
@@ -20,7 +21,6 @@ EvenementDialog::EvenementDialog(Pret *pret, QWidget *parent) :
     ui->evtTypeComboBox->setModelColumn(1); // cacher la colonne id
 
     ui->dateInput->setDate( QDate::currentDate() );
-    this->pret = pret;
 }
 
 EvenementDialog::~EvenementDialog()
@@ -41,7 +41,7 @@ void EvenementDialog::accept ()
 
     Evenement *evt = new Evenement(libelle, date, valeur, type, permanent);
     std::cout << "event " << evt->getType() << " valeur:" << evt->getValeur() << std::endl;
-    pret->ajouterEvenement(evt);
+    pret.ajouterEvenement(evt);
 
 //    ajouterEvenement(ui->dateInput->date(), ui->libelleInput->text(), value, pretId, eventTypeId, true);
 //    std::cout << "accept eventtype=" << eventTypeId << std::endl;

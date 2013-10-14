@@ -6,6 +6,8 @@
 #include <math.h>
 #include <iostream>
 
+Pret::Pret() {}
+
 Pret::Pret(long capitalEmprunte, float tauxInteret, int duree, float tauxAssurance, QDate dateDebloquage)
 {
     this->capitalEmprunte = capitalEmprunte;
@@ -26,6 +28,16 @@ Pret::Pret(long capitalEmprunte, float tauxInteret, float mensualiteHorsAssuranc
     this->duree = 0;
     this->dateDebloquage = dateDebloquage;
     qDebug() << "creation pret avec mensualite" << capitalEmprunte << tauxInteret << tauxAssurance << mensualite << duree << dateDebloquage.toString(Qt::ISODate);
+}
+
+void Pret::initialize(long capitalEmprunte, float tauxInteret, int duree, float mensualiteHorsAssurance, float tauxAssurance, QDate dateDebloquage) {
+    qDebug() << "initialisation pret: " << capitalEmprunte << tauxInteret << duree << tauxAssurance << mensualiteHorsAssurance << dateDebloquage.toString(Qt::ISODate);
+    this->capitalEmprunte = capitalEmprunte;
+   this->tauxInteret = tauxInteret;
+    this->duree = duree;
+    this->tauxAssurance = tauxAssurance;
+    this->mensualite = mensualiteHorsAssurance;
+    this->dateDebloquage = dateDebloquage;
 }
 
 void Pret::ajouterEvenement(Evenement *evt) {
