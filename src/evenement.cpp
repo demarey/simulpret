@@ -11,23 +11,23 @@ Evenement::Evenement(QString libelle, QDate date, float valeur, EvenementType ty
     this->permanent = isPermanent;
 }
 
-QString Evenement::getLibelle() {
+QString Evenement::getLibelle() const {
     return libelle;
 }
 
-QDate Evenement::getDate() {
+QDate Evenement::getDate() const {
     return date;
 }
 
-float Evenement::getValeur() {
+float Evenement::getValeur() const {
     return valeur;
 }
 
-Evenement::EvenementType Evenement::getType() {
+Evenement::EvenementType Evenement::getType() const {
     return type;
 }
 
-QString Evenement::getTypeAsString() {
+QString Evenement::getTypeAsString() const {
     switch(type) {
         case Evenement::DIFFERE_TOTAL : return QString::fromUtf8("Différé total");
         case Evenement::DIFFERE_PARTIEL : return QString::fromUtf8("Différé partiel (paiement des intérêts)");
@@ -38,7 +38,7 @@ QString Evenement::getTypeAsString() {
     }
 }
 
-bool Evenement::isPermanent() {
+bool Evenement::isPermanent() const {
     return permanent;
 }
 

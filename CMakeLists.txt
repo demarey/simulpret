@@ -5,6 +5,7 @@ FIND_PACKAGE(Qt4 REQUIRED)
 cmake_minimum_required(VERSION 2.8)
 
 SET(SIMULPRET_SOURCES 
+    src/calculecheancier.cpp
     src/db.cpp
     src/dbdumper.cpp
     src/evenement.cpp
@@ -17,6 +18,7 @@ SET(SIMULPRET_SOURCES
     src/ui/mainwindow.cpp
     src/ui/pretwidget.cpp)
 SET(SIMULPRET_HEADERS
+    src/calculecheancier.h
     src/db.h
     src/evenement.h
     src/pret.h

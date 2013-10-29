@@ -12,12 +12,12 @@ public:
     Evenement();
     Evenement(QString libelle, QDate date, float valeur, EvenementType type, bool isPermanent);
 
-    QString getLibelle();
-    QDate getDate();
-    float getValeur();
-    EvenementType getType();
-    QString getTypeAsString();
-    bool isPermanent();
+    QString getLibelle() const;
+    QDate getDate() const;
+    float getValeur() const;
+    EvenementType getType() const;
+    QString getTypeAsString() const;
+    bool isPermanent() const;
     void persist();
 
 private:

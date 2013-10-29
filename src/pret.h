@@ -28,34 +28,14 @@ public:
     void initialize(long capitalEmprunte, float tauxInteret, int duree, float mensualiteHorsAssurance, float tauxAssurance, QDate dateDebloquage);
 
     /**
-     * Calculer le coût mensuel de l'assurance.
-     */
-    float getCoutMensuelAssurance();
-
-    /**
-     * Calculer le coût mensuel des intérêts.
-     */
-    float calculerInteretsMensuels(double capitalRestantDu, float tauxInteret);
-
-    /**
      * Calculer la durée de remboursement à payer en fonction des paramètres donnés (dont mensualité).
      */
     int calculerDureeRemboursement(long capitalEmprunte, float tauxInteret, float mensualite, float tauxAssurance);
 
     /**
-     * Calculer la durée de remboursement à payer en fonction des paramètres du prêt et de la mensualité donnée.
-     */
-    int majDureeRemboursement(float mensualite, float nouvelleMensualite);
-
-    /**
      * Calculer la mensualité à payer en fonction des paramètres donnés (dont durée).
      */
     float calculerMensualite(long capitalEmprunte, float tauxInteret, int duree, float tauxAssurance);
-
-    /**
-     * Calculer l'échéancier et l'enregistrer dans la BD.
-     */
-    int calculerEcheancier();
 
     /**
      * Calculer le coût total du crédit (inclue l'assurance).

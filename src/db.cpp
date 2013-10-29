@@ -205,6 +205,7 @@ void ajouterEcheance(int echeancierId, QDate dateEcheance, float capitalRestantD
     query.bindValue(":echeancier_id", echeancierId);
     if ( !query.exec() )
         qDebug() << "Error while inserting data into 'echeance' table:" << query.lastError().text();
+//    qDebug() << "ajouterEcheance: " << echeancierId << dateEcheance << capitalRestantDu << mensualite << capital << interets << assurance;
 }
 
 /**

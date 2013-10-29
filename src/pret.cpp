@@ -1,9 +1,8 @@
-#include "pret.h"
 #include "db.h"
-#include <QListIterator>
+#include "pret.h"
+#include <QDebug>
 #include <QStringBuilder>
 #include <QString>
-#include <math.h>
 #include <iostream>
 
 Pret::Pret() {}
@@ -44,26 +43,13 @@ void Pret::ajouterEvenement(Evenement *evt) {
     evenements.append(*evt);
 }
 
-float Pret::getCoutMensuelAssurance() {
-    return this->capitalEmprunte * this->tauxAssurance / 12;
-}
-
 int Pret::calculerDureeRemboursement(long capitalEmprunte, float tauxInteret, float mensualite, float tauxAssurance) {
     float n = (log((12*mensualite) / (12*mensualite-tauxInteret*capitalEmprunte))) / log(1+tauxInteret/12);
     return ceil(n);
 }
 
-int Pret::majDureeRemboursement(float mensualite, float nouvelleMensualite) {
-    float n = (log((12*mensualite) / (12*nouvelleMensualite-this->tauxInteret*this->capitalEmprunte))) / log(1+this->tauxInteret/12);
-    return ceil(n);
-}
-
 float Pret::calculerMensualite(long capitalEmprunte, float tauxInteret, int duree, float tauxAssurance) {
     return (capitalEmprunte * tauxInteret/12 ) / (1 - pow(1 + tauxInteret/12, -1 * duree));
-}
-
-float Pret::calculerInteretsMensuels(double capitalRestantDu, float tauxInteret) {
-    return capitalRestantDu * tauxInteret / 12;
 }
 
 int Pret::getId() {
@@ -72,92 +58,6 @@ int Pret::getId() {
 
 void Pret::setId(int id) {
     this->id = id;
-}
-
-int Pret::calculerEcheancier() {
-    double capitalRestantDu = this->capitalEmprunte;
-    double assurance = getCoutMensuelAssurance();
-    double capitalRembourse,
-           interets = 0,
-           mensualiteEcheance = this->getMensualite();
-    QDate dateMensualite = this->dateDebloquage;
-    bool evenementTraite = true;
-
-    // Créer l'échéancier
-    int echeancierId = creerEcheancier("Echéancier prêt", QDate::currentDate(), this->id);
-
-    std::cout << "Echeancier id : " << echeancierId << "\n";
-    if (echeancierId != -1) {
-        // Récupérer les événements relatifs au prêt
-        QListIterator<Evenement> evtsIterator(this->evenements);
-        std::cout << "evts size = " << this->evenements.count() << std::endl;
-        Evenement event;
-
-        // Calculer les échéances
-        while (capitalRestantDu > 0) {
-            if ( !evenementTraite || (evenementTraite && evtsIterator.hasNext()) ) {
-                // Si evenement traité, passer au suivant
-                if ( evenementTraite ) {
-                    event = evtsIterator.next();
-                    evenementTraite = false;
-                }
-                // Si la date de mensualité est antérieure à la date de l'évènement, rien à faire : on attend l'échéance suivante.
-                if (dateMensualite >= event.getDate()) {
-                    std::cout << "evenement a traiter : " << event.getType() << " " << event.getDate().toString().toStdString() << std::endl;
-                    switch(event.getType()) {
-                    case Evenement::DIFFERE_TOTAL :
-                        std::cout << "differe total" << std::endl;
-                        for (int nbReports = event.getValeur(); nbReports > 0; nbReports--) {
-                            // capital restant du est augmenté des frais intercalaires générés par le différé total
-                            capitalRestantDu += calculerInteretsMensuels(capitalRestantDu, this->tauxInteret);
-                            // mensualite = assurance
-                            ajouterEcheance(echeancierId, dateMensualite, capitalRestantDu, assurance, 0, interets, assurance);
-                            dateMensualite = dateMensualite.addMonths(1);
-                        }
-                        break;
-                    case Evenement::DIFFERE_PARTIEL :
-                        std::cout << "differe partiel" << std::endl;
-                        interets = calculerInteretsMensuels(capitalRestantDu, this->tauxInteret);
-                        for (int nbReports = event.getValeur(); nbReports > 0; nbReports--) {
-                            // mensualite = cout des frais intercalaires + assurance
-                            ajouterEcheance(echeancierId, dateMensualite, capitalRestantDu, interets + assurance, 0, interets, assurance);
-                            dateMensualite = dateMensualite.addMonths(1);
-                        }
-                        break;
-                    case Evenement::MAJ_MENSUALITE :
-                        std::cout << "maj mensualite" << std::endl;
-                        mensualiteEcheance = event.getValeur() - getCoutMensuelAssurance();
-                        this->duree = majDureeRemboursement(this->getMensualite(), mensualiteEcheance);
-                        break;
-                    case Evenement::MAJ_TAUX :
-                        std::cout << "maj taux" << std::endl;
-                        break;
-                    case Evenement::RBT_ANTICIPE :
-                        std::cout << "rbt anticipe" << std::endl;
-                        capitalRestantDu -= event.getValeur();
-                        break;
-                    case Evenement::REPORT_MENSUALITE : // utile? utiliser report partiel/total?
-                        std::cout << "report mensualite" << std::endl;
-                        break;
-                    }
-                    evenementTraite = true;
-                }
-            }
-
-            interets = calculerInteretsMensuels(capitalRestantDu, this->tauxInteret);
-            if ( (capitalRestantDu+interets) >= mensualiteEcheance) {
-                capitalRembourse = mensualiteEcheance - interets;
-            } else {
-                capitalRembourse = capitalRestantDu;
-                mensualiteEcheance = capitalRestantDu+interets;
-            }
-            capitalRestantDu -= capitalRembourse;
-            ajouterEcheance(echeancierId, dateMensualite, capitalRestantDu, mensualiteEcheance + assurance, capitalRembourse, interets, assurance);
-            dateMensualite = dateMensualite.addMonths(1);
-        }
-    }
-//    std::cout.flush();
-    return echeancierId;
 }
 
 float Pret::getSommeRbtAnticipes() {

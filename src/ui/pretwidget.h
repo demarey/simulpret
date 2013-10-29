@@ -5,7 +5,7 @@
 #include <QWidget>
 
 namespace Ui {
-class PretWidget;
+    class PretWidget;
 }
 
 class PretWidget : public QWidget

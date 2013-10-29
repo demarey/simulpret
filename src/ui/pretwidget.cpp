@@ -2,6 +2,7 @@
 #include <QtSql>
 
 #include "../db.h"
+#include "../calculecheancier.h"
 #include "currencydelegate.h"
 #include "pretwidget.h"
 #include "evenementdialog.h"
@@ -61,7 +62,7 @@ void PretWidget::on_boutonSupprimerEvenement_clicked() {
 }
 
 void PretWidget::majEcheancier() {
-    this->echeancierCourant = pret.calculerEcheancier();
+    this->echeancierCourant = (new CalculEcheancier(&pret))->compute();
     QSqlQueryModel *echeancierModel = new QSqlQueryModel();
     initializeEcheancierModel(echeancierModel, this->echeancierCourant);
     // createView(QObject::tr("Simulation de pret"), echeancierModel);
